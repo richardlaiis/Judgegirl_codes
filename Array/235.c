@@ -1,86 +1,92 @@
 #include <stdio.h>
 #define int long long
+typedef struct Frac {
+	int nu;
+	int de;
+} frac;
+typedef struct Pins {
+	int l;
+	int r;
+} pins;
+int abs(int x) {
+	return (x>0)?x:(-x);
+}
 int gcd(int a, int b) {
-	while(a%b!=0) {
+	a = abs(a);
+	b = abs(b);
+	while(a%b != 0) {
 		int k = a%b;
-		a=b;
-		b=k;
+		a = b;
+		b = k;
 	}
 	return b;
 }
-struct pin {
-	int a,b;
-};
-signed main() {
-	int N;
-	scanf("%lld",&N);
-	struct pin pins[N+1][N+1];
-	for(int i = 1; i <= N; i++) {
-		for(int j = 1; j <= i; j++) {
-			scanf("%lld%lld",&pins[i][j].a, &pins[i][j].b);
-		}
-	}
-	struct pin chance[N+5][N+5];
-	for(int i = 1; i <= N+5; i++) {
-		for(int j = 1; j<= N+5; j++) {
-			chance[i][j].a = 0;
-			chance[i][j].b = 1;
-		}
-	}
-	chance[1][1].a = 1;
-	chance[1][1].b = 1;
-	int tmp;
-	for(int i = 1; i <= N; i++) {
-		for(int j = 1; j <= i; j++) {
-			int m, n;
-			m = chance[i][j].a;
-			n = chance[i][j].b;
-			int k, l;
-			k = pins[i][j].a;
-			l = pins[i][j].b;
-			int x, y, z, w;
-			x = chance[i+1][j].a;
-			y = chance[i+1][j].b;
-			z = chance[i+1][j+1].a;
-			w = chance[i+1][j+1].b;
-			int u = m*k, v = n*(k+l);
-			tmp = gcd(u,v);
-			u/=tmp, v/=tmp;
-			int e = x*v+u*y, f = v*y;
-			tmp = gcd(e,f);
-			e/=tmp, f/=tmp;
-			chance[i+1][j].a=e, chance[i+1][j].b=f;
-			
-			u = m*l, v = n*(k+l);
-			tmp = gcd(u,v);
-			u/=tmp, v/=tmp;
-			e = z*v+w*u, f = w*v;
-			tmp = gcd(e,f);
-			e/=tmp, f/=tmp;
-			chance[i+1][j+1].a=e, chance[i+1][j+1].b=f;
-			//int x = chance[i][j].a*pins[i][j].a, y = chance[i][j].a*pins[i][j].b, z = chance[i][j].b*(pins[i][j].a+pins[i][j].b);
-			//int k = chance[i+1][j].a, l = chance[i+1][j].b, m = chance[i+1][j+1].a, n = chance[i+1][j+1].b;
-			//chance[i+1][j].a = k*z+x*l, chance[i+1][j].b = z*l;
-			//int tmp = gcd(chance[i+1][j].a, chance[i+1][j].b);
-			//chance[i+1][j].a/=tmp, chance[i+1][j].b/=tmp;	
-			//printf("%d %d %d %d %d %d %d\n",x,y,z,k,l,m,n);
-			//chance[i+1][j+1].a = y*n+m*z, chance[i+1][j+1].b = z*n;
-			//tmp = gcd(chance[i+1][j+1].a, chance[i+1][j+1].b);
-			//chance[i+1][j+1].a/=tmp, chance[i+1][j+1].b/=tmp;	
-		}
-	}
-	//for(int i = 1; i <= N+1; i++) {
-	//	for(int j = 1; j<= N+1; j++) {
-	//		printf("%lld/%lld ", chance[i][j].a, chance[i][j].b);
-	//	}
-	//	printf("\n");
-	//}
-	//for(int i = 1; i <= N; i++) {
-	//	printf("%d/%d ", chance[N][i].a, chance[N][i].b);
-	//}
-	for(int i = 1; i <= N+1; i++) {
-		printf("%lld/%lld\n",chance[N+1][i].a,chance[N+1][i].b);
-	}
-	
+frac add(frac a, frac b) {
+	int new_nu = a.nu*b.de+b.nu*a.de;
+	int new_de = a.de*b.de;
+	int gcdn = gcd(new_nu, new_de);
+	new_nu /= gcdn;
+	new_de /= gcdn;
+	frac res = {abs(new_nu), abs(new_de)};
+	return res;
 }
+frac mul(frac a, frac b) {
+	int new_nu = a.nu*b.nu;
+	int new_de = a.de*b.de;
+	int gcdn = gcd(new_nu, new_de);
+	new_nu /= gcdn;
+	new_de /= gcdn;
+	frac res = {new_nu, new_de};
+	return res;
 
+}
+void print(frac x) {
+	printf("%lld/%lld\n",x.nu,x.de);
+	return ;
+}
+signed main() {
+	/*
+	frac a = {6,17};
+	frac b = {9,85};
+	frac result = add(a, b);
+	printf("%d/%d\n",result.nu,result.de);
+	*/
+	int n; 
+	scanf("%lld",&n);
+	pins pin[n+1][n+1];
+	for(int i = 1; i <= n; i++) {
+		for(int j = 1; j <= i; j++) {
+			scanf("%lld%lld",&pin[i][j].l,&pin[i][j].r);
+		}
+	}
+	frac chance[n+2][n+2];
+	for(int i = 1; i <= n+1; i++) {
+		for(int j = 1; j <= n+1; j++) {
+			chance[i][j].nu = 0;
+			chance[i][j].de = 1;
+		}
+	}
+	frac init = {1,1};
+	chance[1][1] = init;
+	for(int i = 2; i <= n+1; i++) {
+		for(int j = 1; j <= i; j++) {
+			if(j == 1) {
+				frac c = {pin[i-1][j].l, pin[i-1][j].l+pin[i-1][j].r};
+				frac tmp = mul(chance[i-1][j], c);
+				chance[i][j] = tmp;
+			}else if(j == i) {
+				frac c = {pin[i-1][j-1].r, pin[i-1][j-1].l+pin[i-1][j-1].r};
+				frac tmp = mul(chance[i-1][j-1], c);
+				chance[i][j] = tmp;
+			}else {
+				frac tmp1 = {pin[i-1][j-1].r, pin[i-1][j-1].l+pin[i-1][j-1].r};
+				frac tmp2 = {pin[i-1][j].l, pin[i-1][j].l+pin[i-1][j].r};
+				frac left = mul(chance[i-1][j-1], tmp1);
+				frac right = mul(chance[i-1][j], tmp2);
+				chance[i][j] = add(left, right);
+			}
+		}
+	}
+	for(int i = 1; i <= n+1; i++) print(chance[n+1][i]);
+
+}
