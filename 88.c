@@ -8,7 +8,7 @@ int main() {
 		bd[i]=-1;
 	}
 	for(int i = 1; i <= 4; i++) {
-		ad[x%10]=i;
+		ad[x%10]i;
 		bd[y%10]=i;
 		x/=10;
 		y/=10;
