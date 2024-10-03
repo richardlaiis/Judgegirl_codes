@@ -1,8 +1,7 @@
 # Judge Girl Codes
-solutions for problems in C programing lecture 2024.
-## My .vimrc
+Solutions for problems in C programing lecture 2024. I hope I can get A+ on this course;D.
+## My .vimrc configuration
 ```
-" test
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -12,21 +11,24 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'suan/vim-instant-markdown'
+Plugin 'honza/vim-snippets'
+Plugin 'arcticicestudio/nord-vim'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
 
 :set nu
+:set rnu
 :set cursorline
 :set tabstop=4
 :set shiftwidth=4
 :set incsearch
+:set termguicolors
 :syntax on
 
-:set bg=dark
-:color evening
-:hi LineNr cterm=bold ctermfg=DarkGrey ctermbg=NONE
-:hi CursorLineNr cterm=bold ctermfg=DarkCyan ctermbg=NONE
+:colorscheme nord
+":hi LineNr cterm=bold ctermfg=DarkGrey ctermbg=NONE
+":hi CursorLineNr cterm=bold ctermfg=DarkCyan ctermbg=NONE
 
 :inoremap ( ()<Esc>i
 :inoremap [ []<Esc>i
@@ -35,13 +37,13 @@ filetype plugin indent on    " required
 :inoremap ' ''<Esc>i
 :inoremap {<CR> {<CR>}<Esc>ko
 :inoremap {{ {}<Esc>i
-:inoremap jk <Esc>:w<CR>
+:inoremap jk <Esc>
 :inoremap <F5> <Esc><F5>
-:inoremap qq <Esc>:wq<CR>
 
 :nnoremap <C-b> :NERDTreeFocus<CR>
 :nnoremap <C-n> :NERDTree<CR>
 :nnoremap <C-t> :NERDTreeToggle<CR>
 :nnoremap <C-f> :NERDTreeFind<CR>
-:nnoremap <F5> :w<CR>:!gcc %:r.c -o %:r && echo "Compiled" && ./%:r<CR>
+:nnoremap <F5> :w<CR>:!clear;gcc %:r.c -DDEBUG -o %:r && echo "Compiled" && ./%:r<CR>
+:nnoremap <F6> :w<CR>:!clear;python3 %<CR>
 ```
