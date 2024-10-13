@@ -47,3 +47,5 @@ filetype plugin indent on    " required
 :nnoremap <F5> :w<CR>:!clear;gcc %:r.c -DDEBUG -o %:r && echo "Compiled" && ./%:r<CR>
 :nnoremap <F6> :w<CR>:!clear;python3 %<CR>
 ```
+## Lecture Resources
+https://github.com/pangfengliu/C202X
