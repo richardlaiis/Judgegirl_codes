@@ -1,0 +1,1 @@
+void paintSurface(int *start,int *p1,int *p2,int L,int W,int H);
