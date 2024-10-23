@@ -23,12 +23,36 @@ int ReadInt(int *x) {
     *x *= neg;
     return 1;
 }
+int get(long long x, int i) {
+	return (x>>(8*i)) % 256;
+}
+void set(long long *x, int i, int value) {
+		
+	for(int i = 7; i >= 0; i--) {
+		printf("%d%c",get(*x,i)," \n"[i==0]);
+	}
+	*x &= ~(0xFF << (8*i));
+	*x |= ((long long)value << (8*i));
+	for(int i = 7; i >= 0; i--) {
+		printf("%d%c",get(*x,i)," \n"[i==0]);
+	}
+}
 int main() {
     int x;
-	long long int shelf;
-    while (ReadInt(&x)) {
+	long long shelf = 0;
+    /*
+	while (ReadInt(&x)) {
 		   	
-    }    
+    }
+ 	*/	
     // output your answer
+	for(int i = 7; i >= 0; i--) {
+		int k;
+		scanf("%d", &k);
+		set(&shelf, i, k);
+	}
+	for(int i = 7; i >= 0; i--) {
+		printf("%d%c",get(shelf,i)," \n"[i==0]);
+	}
     return 0;
 }
