@@ -1,4 +1,5 @@
 #include <stdio.h>
+typedef unsigned long long ull;
 int hasEOF = 0;
 int readchar() {
     static int N = 1<<20;
@@ -7,7 +8,7 @@ int readchar() {
     if(p == end) {
         if((end = buf + fread(buf, 1, N, stdin)) == buf) {
             hasEOF = 1;
-            return EOF;    
+            return EOF;
         }
         p = buf;
     }
@@ -23,36 +24,24 @@ int ReadInt(int *x) {
     *x *= neg;
     return 1;
 }
-int get(long long x, int i) {
-	return (x>>(8*i)) % 256;
-}
-void set(long long *x, int i, int value) {
-		
-	for(int i = 7; i >= 0; i--) {
-		printf("%d%c",get(*x,i)," \n"[i==0]);
-	}
-	*x &= ~(0xFF << (8*i));
-	*x |= ((long long)value << (8*i));
-	for(int i = 7; i >= 0; i--) {
-		printf("%d%c",get(*x,i)," \n"[i==0]);
-	}
-}
 int main() {
-    int x;
-	long long shelf = 0;
-    /*
-	while (ReadInt(&x)) {
-		   	
-    }
- 	*/	
-    // output your answer
-	for(int i = 7; i >= 0; i--) {
-		int k;
-		scanf("%d", &k);
-		set(&shelf, i, k);
+	int x;
+	ull b = 0;
+	int p[256] = {[1]=0,[2]=1,[4]=2,[8]=3,[16]=4,[32]=5,[64]=6,[128]=7};
+	const ull pre[8] = {0xffffffffffffff00, 0xffffffffffff0000, 0xffffffffff000000, 0xffffffff00000000,0xffffff0000000000, 0xffff000000000000, 0xff00000000000000, 0};
+	const ull suf[8] = {0, 0x00000000000000ff, 0x000000000000ffff, 0x0000000000ffffff, 0x00000000ffffffff,
+0x000000ffffffffff, 0x0000ffffffffffff, 0x00ffffffffffffff};
+	while(ReadInt(&x)) {
+		int pos = (((b&0x00000000000000ff)==x) | (((b&0x000000000000ff00)>>8)==x)<<1 | (((b&0x000000000ff0000)>>16)==x)<<2 | (((b&0x00000000ff000000)>>24)==x)<<3 | (((b&0x000000ff00000000)>>32)==x)<<4| (((b&0x0000ff0000000000)>>40)==x)<<5 | (((b&0x00ff000000000000)>>48)==x)<<6|(((b&0xff00000000000000)>>56)==x)<<7);
+		if(pos == 0) {
+			b = (b<<8)|x;
+			continue;
+		}
+		pos = p[pos];
+		b = x | b&pre[pos] | ((b&suf[pos])<<8);
 	}
 	for(int i = 7; i >= 0; i--) {
-		printf("%d%c",get(shelf,i)," \n"[i==0]);
+		printf("%d%c",(b>>(i<<3))&255," \n"[i==0]);
 	}
-    return 0;
 }
+
