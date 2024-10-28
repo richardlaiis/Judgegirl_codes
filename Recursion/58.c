@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define maxn 400
+int foo = 0;
 void dfs(int x, int y, int vis[maxn][maxn], int *area, int n, int m, int a[maxn][maxn]) {
 	int d[5] = {0, 1, 0, -1, 0};
 	for(int i = 0; i < 4; i++) {
@@ -12,6 +13,7 @@ void dfs(int x, int y, int vis[maxn][maxn], int *area, int n, int m, int a[maxn]
 			dfs(newx, newy, vis, area, n, m, a);
 		}
 	}
+	foo++;
 }
 int cmp(const void *a, const void *b) {
 	return *(int*)b - *(int*)a; 
