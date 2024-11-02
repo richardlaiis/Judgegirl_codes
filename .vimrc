@@ -43,5 +43,5 @@ filetype plugin indent on    " required
 :nnoremap <C-n> :NERDTree<CR>
 :nnoremap <C-t> :NERDTreeToggle<CR>
 :nnoremap <C-f> :NERDTreeFind<CR>
-:nnoremap <F5> :w<CR>:!clear;gcc %:r.c -DDEBUG -o %:r && echo "Compiled" && ./%:r<CR>
+:nnoremap <F5> :w<CR>:!clear;gcc %:r.c -DDEBUG -O2 -o %:r && echo "Compiled" && ./%:r<CR>
 :nnoremap <F6> :w<CR>:!clear;python3 %<CR>
