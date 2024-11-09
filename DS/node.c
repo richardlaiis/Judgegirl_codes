@@ -10,10 +10,11 @@ struct node *getNode(struct node *head, unsigned int i) {
     }
     struct node *tmp2 = head;
     int idx = n-1;
-
+    
     if(i >= n) {
         return NULL;
     }
+
 
     while(idx != i) {
         tmp2 = tmp2->next;
